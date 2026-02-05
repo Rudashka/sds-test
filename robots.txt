@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://sds-test.ru/sitemap.xml
