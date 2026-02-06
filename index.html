@@ -980,12 +980,12 @@
 
       <h3 style="margin:34px 0 0;">Оставить заявку</h3>
 
-      <form id="tgForm">
+      <form id="tgForm" novalidate>
         <input type="text" name="website" autocomplete="off" tabindex="-1" aria-hidden="true" style="position:absolute; left:-9999px; width:1px; height:1px; opacity:0;">
         <input name="name" placeholder="Ваше имя" required />
         <input type="tel" name="phone" placeholder="Телефон" inputmode="tel" required>
         <textarea name="comment" placeholder="Комментарий"></textarea>
-        <button class="btn" type="submit">Отправить</button>
+        <button type="submit">Отправить</button>
       </form>
 
       <p id="formStatus" style="margin:14px 0 0; color:rgba(255,255,255,.75); font-size:14px;"></p>
@@ -1187,6 +1187,43 @@
 
 
 </script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
 
+  const form = document.getElementById("tgForm");
+  if (!form) return;
+
+  form.addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const data = {
+      name: form.querySelector('[name="name"]').value,
+      phone: form.querySelector('[name="phone"]').value,
+      comment: form.querySelector('[name="comment"]').value
+    };
+
+    try {
+      const res = await fetch("https://sds-telegram-form.beyond97.workers.dev", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+
+      const json = await res.json();
+
+      if (json.ok) {
+        window.location.href = "/thanks.html";
+      } else {
+        alert("Ошибка отправки");
+      }
+
+    } catch (err) {
+      alert("Ошибка сети");
+    }
+
+  });
+
+});
+</script>
 </body>
 </html>
